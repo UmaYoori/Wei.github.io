@@ -130,3 +130,27 @@ body {
     box-shadow: 0 0 20px #00f2ff;
 }
 
+#star-field {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Behind Helios and the UI */
+    background: black;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    /* This variable is what we will control! */
+    animation: moveStar var(--speed, 10s) linear infinite;
+}
+
+@keyframes moveStar {
+    from { transform: translateY(-10vh); }
+    to { transform: translateY(110vh); }
+}
