@@ -1,0 +1,50 @@
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.neon-text {
+    color: #fff;
+    text-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 40px #ff00de;
+    font-size: 3rem;
+}
+
+.char-box img {
+    width: 300px;
+    filter: drop-shadow(0 0 15px #00f2ff);
+}
+
+/* The "Bouncy" Helios Animation */
+.floating {
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.vibe-button {
+    background: #ff00de;
+    border: none;
+    padding: 15px 30px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0 0 15px #ff00de;
+    transition: 0.3s;
+}
+
+.vibe-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00f2ff;
+}
+
