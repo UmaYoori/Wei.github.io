@@ -198,8 +198,36 @@ function toggleBGM() {
     }
 }
 
+function openModal() {
+    document.getElementById("helios-modal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("helios-modal").style.display = "none";
+}
+
+// Close if user clicks outside the box
+window.onclick = function(event) {
+    let modal = document.getElementById("helios-modal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
     </script>
+    <button id="info-btn" onclick="openModal()">?</button>
+
+<div id="helios-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 class="neon-text-small">WHO IS HELIOS?</h2>
+        <p>She's the "Party Gal" of the turf! Known for her high energy, Eurobeat vibes, and legendary slang.</p>
+        <hr>
+        <p>Vibe Status: <strong>MAXIMUM ZUNDOKO</strong></p>
+        <p style="font-size: 0.8rem;">Created for the culture.</p>
+    </div>
+</div>
+
 </body>
 </html>
 
