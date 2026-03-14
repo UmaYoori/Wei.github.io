@@ -21,9 +21,25 @@
 
     <script>
         function playVoice() {
-            let audio = new Audio('weiii-daitaku-helios.mp3'); // Add your mp3 file here
-            audio.play();
-        }
+    const audio = new Audio('helios-voice.mp3');
+    const img = document.getElementById('helios-img');
+    
+    // Play sound
+    audio.play();
+
+    // Trigger the shake animation
+    img.classList.add('shake');
+    
+    // Remove the class after animation finishes so it can be re-triggered
+    setTimeout(() => {
+        img.classList.remove('shake');
+    }, 500);
+
+    // Bonus: Flash the background color for a split second!
+    document.body.style.backgroundColor = "#444";
+    setTimeout(() => { document.body.style.backgroundColor = "#1a1a1a"; }, 100);
+}
+
     </script>
 </body>
 </html>
