@@ -218,3 +218,21 @@ body {
     cursor: pointer;
     color: #ff00de;
 }
+.share-btn {
+    background-color: #000; /* Black for X branding */
+    color: white;
+    border: 1px solid #555;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s;
+    font-family: sans-serif;
+}
+
+.share-btn:hover {
+    background-color: #333;
+    border-color: #00f2ff; /* Glow on hover to match site */
+}
+
