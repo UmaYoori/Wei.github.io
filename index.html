@@ -153,6 +153,28 @@ function toggleBGM() {
     }
 }
 
+        function playVoice() {
+    const audio = new Audio('helios-voice.mp3');
+    const img = document.getElementById('helios-img');
+    const body = document.body;
+
+    audio.play();
+    hitCounter(); // From the previous step
+    spawnEmoji(); // From the previous step
+
+    // Shake the image
+    img.classList.add('shake');
+    
+    // THE FLASH: Add the flash class to the body
+    body.classList.add('party-flash');
+
+    // Clean up classes after animation
+    setTimeout(() => {
+        img.classList.remove('shake');
+        body.classList.remove('party-flash');
+    }, 100); 
+}
+
     </script>
 </body>
 </html>
