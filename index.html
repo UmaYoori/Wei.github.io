@@ -216,6 +216,20 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+function shareVibes() {
+    // Get the current click count from your counter element
+    const count = document.getElementById('count-number').innerText;
+    
+    // Customize your message
+    const tweetText = `I just generated ${count} vibes for Daitaku Helios! 🌟 WAYYYY!! Check out the shrine here:`;
+    const tweetUrl = window.location.href; // This automatically gets your GitHub URL
+    
+    // Create the X (Twitter) intent URL
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}&hashtags=DaitakuHelios,UmaMusume`;
+    
+    // Open in a new window
+    window.open(twitterUrl, '_blank');
+}
 
     </script>
     <button id="info-btn" onclick="openModal()">?</button>
