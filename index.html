@@ -14,7 +14,12 @@
             <img src="Daitaku_Helios_Chibi1-2.webp" alt="Helios" id="helios-img" class="floating">
         </div>
 
-        <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
+        <div class="counter-box">
+    <p>TOTAL VIBES GENERATED:</p>
+    <span id="count-number" class="neon-text-small">LOADING...</span>
+        </div>
+        
+    <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
         
         <p class="slang">"ZUNDOKO VIBES ONLY!"</p>
     </div>
@@ -64,6 +69,31 @@ function playVoice() {
     spawnEmoji(); 
     spawnEmoji(); // Spawn two for extra hype!
 }
+        const NAMESPACE = "helios-shrine-unique-id"; // Change this to something unique!
+const KEY = "wayyy-clicks";
+
+// 1. Fetch the current count when the page opens
+async function updateDisplay() {
+    const response = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`);
+    const data = await response.json();
+    document.getElementById('count-number').innerText = data.value || 0;
+}
+
+// 2. Increment the count when clicking the button
+async function hitCounter() {
+    const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`);
+    const data = await response.json();
+    document.getElementById('count-number').innerText = data.value;
+}
+
+// Update your main function
+function playVoice() {
+    // ... your existing audio and emoji code ...
+    hitCounter(); 
+}
+
+// Run on load
+updateDisplay();
 
     </script>
 </body>
