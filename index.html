@@ -40,6 +40,31 @@
     setTimeout(() => { document.body.style.backgroundColor = "#1a1a1a"; }, 100);
 }
 
+        const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
+
+function spawnEmoji() {
+    const emoji = document.createElement('div');
+    emoji.className = 'floating-item';
+    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    
+    // Random horizontal position
+    emoji.style.left = Math.random() * 100 + "vw";
+    
+    document.body.appendChild(emoji);
+
+    // Remove it from the DOM after animation finishes
+    setTimeout(() => {
+        emoji.remove();
+    }, 5000);
+}
+
+// Update your existing playVoice function to call this!
+function playVoice() {
+    // ... your existing audio and shake code ...
+    spawnEmoji(); 
+    spawnEmoji(); // Spawn two for extra hype!
+}
+
     </script>
 </body>
 </html>
