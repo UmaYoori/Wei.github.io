@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAITAKU HELIOS SHRINE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="shrine-container">
+        <h1 class="neon-text">☆ DAITAKU HELIOS ☆</h1>
+        
+        <div class="char-box">
+            <img src="helios-render.png" alt="Helios" id="helios-img" class="floating">
+        </div>
+
+        <button class="vibe-button" onclick="playVoice()">WAYYYY!!</button>
+        
+        <p class="slang">"ZUNDOKO VIBES ONLY!"</p>
+    </div>
+
+    <script>
+        function playVoice() {
+            let audio = new Audio('helios-voice.mp3'); // Add your mp3 file here
+            audio.play();
+        }
+    </script>
+</body>
+</html>
+
