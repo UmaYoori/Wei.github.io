@@ -38,198 +38,106 @@
     </div>
 
     <script>
-        function playVoice() {
+        const NAMESPACE = "helios-shrine-unique-id"; 
+const KEY = "wayyy-clicks";
+const bgm = document.getElementById('helios-bgm');
+const bgmBtn = document.getElementById('bgm-toggle');
+const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
+let raveInterval;
+
+// --- 1. INITIALIZE ---
+async function updateDisplay() {
+    try {
+        const response = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`);
+        const data = await response.json();
+        document.getElementById('count-number').innerText = data.value || 0;
+    } catch (e) { document.getElementById('count-number').innerText = "VIBIN'"; }
+}
+updateDisplay();
+
+// --- 2. THE MAIN "WAYYY" ACTION ---
+async function playVoice() {
+    // Audio & Visuals
     const audio = new Audio('helios-voice.mp3');
     const img = document.getElementById('helios-img');
-    
-    // Play sound
     audio.play();
-
-    // Trigger the shake animation
-    img.classList.add('shake');
     
-    // Remove the class after animation finishes so it can be re-triggered
+    // Effects
+    img.classList.add('shake');
+    document.body.classList.add('party-flash');
+    spawnEmoji();
+    spawnEmoji();
+
+    // Counter Update
+    try {
+        const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`);
+        const data = await response.json();
+        document.getElementById('count-number').innerText = data.value;
+    } catch (e) { console.log("Counter offline"); }
+
     setTimeout(() => {
         img.classList.remove('shake');
-    }, 500);
-
-    // Bonus: Flash the background color for a split second!
-    document.body.style.backgroundColor = "#444";
-    setTimeout(() => { document.body.style.backgroundColor = "#1a1a1a"; }, 100);
+        document.body.classList.remove('party-flash');
+    }, 100);
 }
 
-        const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
-
-function spawnEmoji() {
-    const emoji = document.createElement('div');
-    emoji.className = 'floating-item';
-    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    
-    // Random horizontal position
-    emoji.style.left = Math.random() * 100 + "vw";
-    
-    document.body.appendChild(emoji);
-
-    // Remove it from the DOM after animation finishes
-    setTimeout(() => {
-        emoji.remove();
-    }, 5000);
-}
-
-// Update your existing playVoice function to call this!
-function playVoice() {
-    // ... your existing audio and shake code ...
-    spawnEmoji(); 
-    spawnEmoji(); // Spawn two for extra hype!
-}
-        const NAMESPACE = "helios-shrine-unique-id"; // Change this to something unique!
-const KEY = "wayyy-clicks";
-
-// 1. Fetch the current count when the page opens
-async function updateDisplay() {
-    const response = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`);
-    const data = await response.json();
-    document.getElementById('count-number').innerText = data.value || 0;
-}
-
-// 2. Increment the count when clicking the button
-async function hitCounter() {
-    const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`);
-    const data = await response.json();
-    document.getElementById('count-number').innerText = data.value;
-}
-
-// Update your main function
-function playVoice() {
-    // ... your existing audio and emoji code ...
-    hitCounter(); 
-}
-
-// Run on load
-updateDisplay();
-        const bgm = document.getElementById('helios-bgm');
-const bgmBtn = document.getElementById('bgm-toggle');
-
+// --- 3. BGM & RAVE MODE ---
 function toggleBGM() {
     if (bgm.paused) {
         bgm.play();
-        bgm.volume = 0.3; // Keep it at 30% so it doesn't drown out the "WAYYY!"
+        bgm.volume = 0.3;
         bgmBtn.innerText = "🎵 MUSIC: ON";
         bgmBtn.classList.add('playing');
-    } else {
-        bgm.pause();
-        bgmBtn.innerText = "🎵 MUSIC: OFF";
-        bgmBtn.classList.remove('playing');
-    }
-}
-
-// 1. Generate the stars
-const starField = document.getElementById('star-field');
-for (let i = 0; i < 50; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    
-    // Randomize size and position
-    const size = Math.random() * 3 + 'px';
-    star.style.width = size;
-    star.style.height = size;
-    star.style.left = Math.random() * 100 + 'vw';
-    
-    // Randomize start delay so they don't all move at once
-    star.style.animationDelay = Math.random() * 10 + 's';
-    
-    starField.appendChild(star);
-}
-
-// 2. Update your toggleBGM function to include the speed change
-function toggleBGM() {
-    if (bgm.paused) {
-        bgm.play();
-        bgmBtn.innerText = "🎵 MUSIC: ON";
-        // WARP SPEED!
-        document.documentElement.style.setProperty('--speed', '1s');
-    } else {
-        bgm.pause();
-        bgmBtn.innerText = "🎵 MUSIC: OFF";
-        // Slow drift...
-        document.documentElement.style.setProperty('--speed', '10s');
-    }
-}
-
-        function playVoice() {
-    const audio = new Audio('helios-voice.mp3');
-    const img = document.getElementById('helios-img');
-    const body = document.body;
-
-    audio.play();
-    hitCounter(); // From the previous step
-    spawnEmoji(); // From the previous step
-
-    // Shake the image
-    img.classList.add('shake');
-    
-    // THE FLASH: Add the flash class to the body
-    body.classList.add('party-flash');
-
-    // Clean up classes after animation
-    setTimeout(() => {
-        img.classList.remove('shake');
-        body.classList.remove('party-flash');
-    }, 100); 
-}
-        let raveInterval;
-
-function toggleBGM() {
-    if (bgm.paused) {
-        bgm.play();
-        bgmBtn.innerText = "🎵 MUSIC: ON";
         document.documentElement.style.setProperty('--speed', '1s');
         
-        // Start auto-flashing every 500ms (adjust to match your song's BPM!)
         raveInterval = setInterval(() => {
             document.body.classList.add('party-flash');
             setTimeout(() => document.body.classList.remove('party-flash'), 100);
         }, 500);
-
     } else {
         bgm.pause();
         bgmBtn.innerText = "🎵 MUSIC: OFF";
+        bgmBtn.classList.remove('playing');
         document.documentElement.style.setProperty('--speed', '10s');
-        
-        // Stop the flashing
         clearInterval(raveInterval);
     }
 }
 
-function openModal() {
-    document.getElementById("helios-modal").style.display = "block";
+// --- 4. EXTRAS (EMOJIS, STARS, MODAL, SHARE) ---
+function spawnEmoji() {
+    const emoji = document.createElement('div');
+    emoji.className = 'floating-item';
+    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 5000);
 }
 
-function closeModal() {
-    document.getElementById("helios-modal").style.display = "none";
+// Generate background stars
+const starField = document.getElementById('star-field');
+for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 3 + 'px';
+    star.style.width = size; star.style.height = size;
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.animationDelay = Math.random() * 10 + 's';
+    starField.appendChild(star);
 }
 
-// Close if user clicks outside the box
-window.onclick = function(event) {
-    let modal = document.getElementById("helios-modal");
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+function openModal() { document.getElementById("helios-modal").style.display = "block"; }
+function closeModal() { document.getElementById("helios-modal").style.display = "none"; }
+
 function shareVibes() {
-    // Get the current click count from your counter element
     const count = document.getElementById('count-number').innerText;
-    
-    // Customize your message
-    const tweetText = `I just generated ${count} vibes for Daitaku Helios! 🌟 WAYYYY!! Check out the shrine here:`;
-    const tweetUrl = window.location.href; // This automatically gets your GitHub URL
-    
-    // Create the X (Twitter) intent URL
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}&hashtags=DaitakuHelios,UmaMusume`;
-    
-    // Open in a new window
+    const tweetText = `I just generated ${count} vibes for Daitaku Helios! 🌟 WAYYYY!!`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(window.location.href)}`;
     window.open(twitterUrl, '_blank');
 }
+
+// Global click listener for modal
+window.onclick = (e) => { if (e.target.className == 'modal') closeModal(); }
+
 
     </script>
     <button id="info-btn" onclick="openModal()">?</button>
