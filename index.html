@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="loading-screen">
+    <div class="loader-content">
+        <h2 class="neon-text-small">LOADING VIBES...</h2>
+        <div class="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+</div>
+
     <div id="star-field"></div>
 
     <div class="music-controls">
@@ -137,6 +146,21 @@ function shareVibes() {
 
 // Global click listener for modal
 window.onclick = (e) => { if (e.target.className == 'modal') closeModal(); }
+        window.addEventListener('load', () => {
+    const progressBar = document.getElementById('progress-bar');
+    const loader = document.getElementById('loading-screen');
+    
+    // Fake a smooth progress bar for style
+    progressBar.style.width = '100%';
+    
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 500); // Wait for fade-out to finish
+    }, 1000); // Show for at least 1 second for the vibe
+});
+
 
 
     </script>
