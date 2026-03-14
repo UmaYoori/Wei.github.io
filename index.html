@@ -28,22 +28,17 @@
 
     <div class="shrine-container">
         <h1 class="neon-text">☆ DAITAKU HELIOS ☆</h1>
-        
         <div class="char-box">
             <img src="Daitaku_Helios_Chibi1-2.webp" alt="Helios" id="helios-img" class="floating">
         </div>
-
         <div class="counter-box">
             <p>TOTAL VIBES GENERATED:</p>
             <span id="count-number" class="neon-text-small">LOADING...</span>
         </div>
-        
         <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
-        
         <div class="share-container">
             <button class="share-btn" onclick="shareVibes()">SHARE YOUR VIBES 𝕏</button>
         </div>
-
         <p class="slang">"ZUNDOKO VIBES ONLY!"</p>
     </div>
 
@@ -53,10 +48,9 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 class="neon-text-small">WHO IS HELIOS?</h2>
-            <p>She's the "Party Gal" of the turf! Known for her high energy, Eurobeat vibes, and legendary slang.</p>
+            <p>She's the "Party Gal" of the turf! Known for her high energy and Eurobeat vibes.</p>
             <hr>
             <p>Vibe Status: <strong>MAXIMUM ZUNDOKO</strong></p>
-            <p style="font-size: 0.8rem;">Created for the culture.</p>
         </div>
     </div>
 
@@ -68,7 +62,6 @@
         const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
         let raveInterval;
 
-        // --- Loading Logic ---
         window.addEventListener('load', () => {
             const progressBar = document.getElementById('progress-bar');
             const loader = document.getElementById('loading-screen');
@@ -79,7 +72,6 @@
             }, 1000);
         });
 
-        // --- Initialize Counter ---
         async function updateDisplay() {
             try {
                 const response = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`);
@@ -89,29 +81,24 @@
         }
         updateDisplay();
 
-        // --- Main Action ---
         async function playVoice() {
             const audio = new Audio('helios-voice.mp3');
             const img = document.getElementById('helios-img');
             audio.play();
-            
             img.classList.add('shake');
             document.body.classList.add('party-flash');
             spawnEmoji(); spawnEmoji();
-
             try {
                 const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`);
                 const data = await response.json();
                 document.getElementById('count-number').innerText = data.value;
-            } catch (e) { console.log("Counter offline"); }
-
+            } catch (e) {}
             setTimeout(() => {
                 img.classList.remove('shake');
                 document.body.classList.remove('party-flash');
             }, 100);
         }
 
-        // --- BGM Logic ---
         function toggleBGM() {
             if (bgm.paused) {
                 bgm.play();
@@ -132,7 +119,6 @@
             }
         }
 
-        // --- Particles & Stars ---
         function spawnEmoji() {
             const emoji = document.createElement('div');
             emoji.className = 'floating-item';
@@ -153,7 +139,6 @@
             starField.appendChild(star);
         }
 
-        // --- Modal & Share ---
         function openModal() { document.getElementById("helios-modal").style.display = "block"; }
         function closeModal() { document.getElementById("helios-modal").style.display = "none"; }
         function shareVibes() {
