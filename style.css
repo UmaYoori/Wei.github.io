@@ -154,3 +154,18 @@ body {
     from { transform: translateY(-10vh); }
     to { transform: translateY(110vh); }
 }
+
+/* This will overlay a color for a split second */
+.party-flash {
+    animation: flash-animation 0.1s brightness(1.5);
+}
+
+@keyframes flash-animation {
+    0% { background-color: #ff00de; filter: brightness(2); }
+    100% { background-color: transparent; }
+}
+
+/* Optional: Make Helios glow harder during the flash */
+.party-mode-active #helios-img {
+    filter: drop-shadow(0 0 30px #fff) brightness(1.2);
+}
