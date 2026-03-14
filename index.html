@@ -120,6 +120,38 @@ function toggleBGM() {
     }
 }
 
+// 1. Generate the stars
+const starField = document.getElementById('star-field');
+for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    
+    // Randomize size and position
+    const size = Math.random() * 3 + 'px';
+    star.style.width = size;
+    star.style.height = size;
+    star.style.left = Math.random() * 100 + 'vw';
+    
+    // Randomize start delay so they don't all move at once
+    star.style.animationDelay = Math.random() * 10 + 's';
+    
+    starField.appendChild(star);
+}
+
+// 2. Update your toggleBGM function to include the speed change
+function toggleBGM() {
+    if (bgm.paused) {
+        bgm.play();
+        bgmBtn.innerText = "🎵 MUSIC: ON";
+        // WARP SPEED!
+        document.documentElement.style.setProperty('--speed', '1s');
+    } else {
+        bgm.pause();
+        bgmBtn.innerText = "🎵 MUSIC: OFF";
+        // Slow drift...
+        document.documentElement.style.setProperty('--speed', '10s');
+    }
+}
 
     </script>
 </body>
