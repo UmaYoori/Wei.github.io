@@ -102,6 +102,22 @@ function playVoice() {
 
 // Run on load
 updateDisplay();
+        const bgm = document.getElementById('helios-bgm');
+const bgmBtn = document.getElementById('bgm-toggle');
+
+function toggleBGM() {
+    if (bgm.paused) {
+        bgm.play();
+        bgm.volume = 0.3; // Keep it at 30% so it doesn't drown out the "WAYYY!"
+        bgmBtn.innerText = "🎵 MUSIC: ON";
+        bgmBtn.classList.add('playing');
+    } else {
+        bgm.pause();
+        bgmBtn.innerText = "🎵 MUSIC: OFF";
+        bgmBtn.classList.remove('playing');
+    }
+}
+
 
     </script>
 </body>
