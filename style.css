@@ -48,3 +48,34 @@ body {
     box-shadow: 0 0 30px #00f2ff;
 }
 
+/* Add a scrolling background pattern */
+body {
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0iIzMzMyIvPjwvc3ZnPg==');
+    text-align: center;
+}
+
+/* Make the title pulse and change colors */
+.neon-text {
+    animation: rainbow-glow 3s infinite linear;
+}
+
+@keyframes rainbow-glow {
+    0% { color: #ff00de; text-shadow: 0 0 20px #ff00de; }
+    33% { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
+    66% { color: #ffff00; text-shadow: 0 0 20px #ffff00; }
+    100% { color: #ff00de; text-shadow: 0 0 20px #ff00de; }
+}
+
+/* Add a "shake" effect when the button is pressed */
+.shake {
+    animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0) scale(1.1); }
+    20%, 80% { transform: translate3d(2px, 0, 0) scale(1.1); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0) scale(1.1); }
+    40%, 60% { transform: translate3d(4px, 0, 0) scale(1.1); }
+}
+
