@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="notification-toast">🌟 MILESTONE REACHED! 🌟</div>
+
     <div id="loading-screen">
         <div class="loader-content">
             <h2 class="neon-text-small">LOADING VIBES...</h2>
@@ -39,16 +41,6 @@
         </div>
     </div>
 
-    <button id="info-btn" onclick="openModal()">?</button>
-
-    <div id="helios-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 class="neon-text-small">WHO IS HELIOS?</h2>
-            <p>The "Party Gal" of the turf! MAXIMUM ZUNDOKO.</p>
-        </div>
-    </div>
-
     <script>
         const bgm = new Audio('helios-theme.mp3'); 
         bgm.loop = true;
@@ -58,7 +50,6 @@
         let raveInterval;
         let milestonesReached = { 100: false, 500: false, 1000: false };
 
-        // --- Personal High Score Logic ---
         let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
         document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
@@ -86,17 +77,14 @@
             const img = document.getElementById('helios-img');
             audio.play().catch(e => {});
             
-            // Visuals
             img.classList.add('shake');
             document.body.classList.add('party-flash');
             spawnEmoji();
 
-            // Personal Counter
             personalClicks++;
             localStorage.setItem('helios_personal_clicks', personalClicks);
             document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
-            // Global Counter
             try {
                 const response = await fetch(COUNTER_URL + "&increment=true");
                 const data = await response.json();
@@ -110,11 +98,19 @@
             }, 100);
         }
 
+        function showToast(message) {
+            const toast = document.getElementById('notification-toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
         function checkMilestones(count) {
-            [100, 500, 1000].forEach(m => {
+            Object.keys(milestonesReached).forEach(m => {
                 if (count >= m && !milestonesReached[m]) {
                     milestonesReached[m] = true;
-                    alert(`🌟 GLOBAL RAVE! ${m} VIBES REACHED! 🌟`);
+                    showToast(`🔥 GLOBAL RAVE: ${m} VIBES! 🔥`);
+                    for(let i=0; i<15; i++) setTimeout(spawnEmoji, i * 100);
                 }
             });
         }
@@ -156,8 +152,6 @@
             if(starField) starField.appendChild(star);
         }
 
-        function openModal() { document.getElementById("helios-modal").style.display = "block"; }
-        function closeModal() { document.getElementById("helios-modal").style.display = "none"; }
         function shareVibes() {
             const tweetText = `I've contributed ${personalClicks} vibes to the Daitaku Helios Shrine! 🌟`;
             window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
