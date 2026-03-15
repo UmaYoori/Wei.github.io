@@ -223,3 +223,7 @@ body {
     background: var(--neon-blue);
     transition: width 0.5s;
 }
+.share-btn:hover {
+    background: #1DA1F2;
+    color: white;
+}
