@@ -21,7 +21,6 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 #star-field {
@@ -67,10 +66,10 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 90%;
+    justify-content: space-evenly;
+    height: 100%;
     width: 100%;
-    padding: 10px;
+    padding: 15px 10px;
     z-index: 10;
 }
 
@@ -81,7 +80,7 @@ html, body {
 }
 
 .char-box img {
-    max-height: 40vh;
+    max-height: 35vh;
     width: auto;
     filter: drop-shadow(0 0 15px var(--neon-pink));
 }
@@ -100,7 +99,7 @@ html, body {
     background: rgba(255, 255, 255, 0.05);
     padding: 10px;
     border-radius: 15px;
-    width: 90%;
+    width: 85%;
     text-align: center;
 }
 
@@ -110,15 +109,27 @@ html, body {
     text-shadow: 0 0 10px var(--neon-blue);
 }
 
+.reset-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #666;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
 .vibe-button {
     background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
     border: none;
-    padding: 15px 50px;
-    font-size: 1.2rem;
+    padding: 15px 60px;
+    font-size: 1.3rem;
     font-weight: bold;
     color: white;
     border-radius: 50px;
     box-shadow: 0 0 20px var(--neon-pink);
+    cursor: pointer;
 }
 
 .music-controls button {
@@ -127,13 +138,15 @@ html, body {
     border: 1px solid var(--neon-blue);
     padding: 5px 15px;
     border-radius: 5px;
+    font-size: 0.8rem;
 }
 
 .floating-item {
     position: fixed;
     bottom: -50px;
-    font-size: 2rem;
+    font-size: 2.5rem;
     animation: moveUp 4s linear forwards;
+    pointer-events: none;
 }
 
 @keyframes moveUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-110vh); opacity: 0; } }
@@ -144,8 +157,10 @@ html, body {
     left: 50%;
     transform: translateX(-50%);
     background: var(--neon-pink);
+    color: white;
     padding: 10px 20px;
     border-radius: 20px;
+    font-weight: bold;
     transition: top 0.5s;
     z-index: 100;
 }
