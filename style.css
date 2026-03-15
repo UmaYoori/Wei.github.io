@@ -160,3 +160,29 @@ html, body {
 }
 
 #notification-toast.show { top: 20px; }
+
+:root {
+    --neon-pink: #ff00ff;
+    --neon-blue: #00ffff;
+    --star-speed: 8s; /* Default slow speed */
+}
+
+/* ... keep everything else the same ... */
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    width: 2px; height: 2px;
+    opacity: 0.5;
+    /* Use the variable here */
+    animation: fall var(--star-speed) linear infinite, twinkle 3s infinite;
+}
+
+@keyframes fall {
+    from { transform: translateY(-10vh); }
+    to { transform: translateY(110vh); }
+}
+
+/* ... keep everything else exactly as it was ... */
+
