@@ -12,7 +12,40 @@ body {
     text-align: center;
 }
 
-.neon-text { animation: rainbow-glow 3s infinite linear; font-size: 3rem; margin: 10px 0; }
+/* Loading Screen Styles */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out;
+}
+
+.progress-bar-container {
+    width: 200px;
+    height: 10px;
+    background: #333;
+    border-radius: 5px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #ff00de;
+    box-shadow: 0 0 10px #ff00de;
+    transition: width 0.3s;
+}
+
+/* Character & Animations */
+.neon-text { animation: rainbow-glow 3s infinite linear; font-size: 3rem; }
 .neon-text-small { font-size: 2rem; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
 
 @keyframes rainbow-glow {
@@ -25,32 +58,40 @@ body {
 .char-box img { width: 300px; filter: drop-shadow(0 0 15px #00f2ff); }
 .floating { animation: bounce 2s infinite ease-in-out; }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-.shake { animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both; }
-@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0) scale(1.1); } 20%, 80% { transform: translate3d(2px, 0, 0) scale(1.1); } 40%, 60% { transform: translate3d(4px, 0, 0) scale(1.1); } }
 
-.vibe-button { background: #ff00de; border: none; padding: 15px 30px; color: white; font-weight: bold; cursor: pointer; border-radius: 50px; box-shadow: 0 0 15px #ff00de; transition: 0.3s; margin: 20px 0; }
-.vibe-button:hover { transform: scale(1.1); box-shadow: 0 0 30px #00f2ff; }
+.shake { animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0) scale(1.1); }
+    20%, 80% { transform: translate3d(2px, 0, 0) scale(1.1); }
+    40%, 60% { transform: translate3d(4px, 0, 0) scale(1.1); }
+}
+
+/* Button & UI */
+.vibe-button {
+    background: #ff00de; border: none; padding: 15px 30px; color: white;
+    font-weight: bold; cursor: pointer; border-radius: 50px; box-shadow: 0 0 15px #ff00de;
+}
 
 .music-controls { position: absolute; top: 20px; right: 20px; z-index: 10; }
-#bgm-toggle { background: transparent; border: 2px solid #00f2ff; color: #00f2ff; padding: 10px 15px; cursor: pointer; border-radius: 5px; }
+#bgm-toggle {
+    background: transparent; border: 2px solid #00f2ff; color: #00f2ff;
+    padding: 10px 15px; cursor: pointer; border-radius: 5px;
+}
 #bgm-toggle.playing { background: #00f2ff; color: #000; box-shadow: 0 0 20px #00f2ff; }
 
+/* Stars & Particles */
 #star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: black; }
 .star { position: absolute; background: white; border-radius: 50%; animation: moveStar var(--speed, 10s) linear infinite; }
 @keyframes moveStar { from { transform: translateY(-10vh); } to { transform: translateY(110vh); } }
 
-.floating-item { position: fixed; z-index: -1; font-size: 2rem; animation: floatUp 5s linear forwards; }
-@keyframes floatUp { 0% { transform: translateY(110vh); opacity: 1; } 100% { transform: translateY(-20vh); opacity: 0; } }
+.floating-item { position: fixed; z-index: -1; animation: floatUp 5s linear forwards; }
+@keyframes floatUp { 0% { transform: translateY(110vh); } 100% { transform: translateY(-20vh); } }
 
-#loading-screen { position: fixed; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-.progress-bar-container { width: 200px; height: 10px; background: #333; border-radius: 5px; margin-top: 20px; overflow: hidden; }
-#progress-bar { width: 0%; height: 100%; background: #ff00de; transition: width 0.3s; }
-
+/* Flash & Modal */
 .party-flash { animation: flash-anim 0.1s; }
 @keyframes flash-anim { 0% { background-color: #ff00de; } 100% { background-color: transparent; } }
 
 .modal { display: none; position: fixed; z-index: 100; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
 .modal-content { background: #1a1a1a; margin: 15% auto; padding: 20px; border: 2px solid #ff00de; border-radius: 15px; width: 80%; max-width: 400px; color: white; }
-.share-btn { background: #000; color: white; border: 1px solid #555; padding: 10px; border-radius: 5px; cursor: pointer; margin: 10px 0; display: block; width: 100%; }
+.share-btn { background: #000; color: white; border: 1px solid #555; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 15px; }
 #info-btn { position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: #00f2ff; border: none; cursor: pointer; z-index: 10; font-weight: bold; }
-
