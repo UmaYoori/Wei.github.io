@@ -27,32 +27,37 @@
         <div class="char-box">
             <img src="Daitaku_Helios_Chibi1-2.webp" alt="Helios" id="helios-img" class="floating">
         </div>
-        
+
         <div class="counter-box">
             <p>GLOBAL VIBES:</p>
-            <span id="count-number" class="neon-text-small">0</span>
-            <p style="margin-top: 10px; font-size: 0.8rem;">YOUR CONTRIBUTION: <span id="personal-count">0</span></p>
+            <span id="count-number" class="neon-text-small">VIBIN'</span>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #aaa;">YOUR CONTRIBUTION: <span id="personal-count" style="color: #00ffff;">0</span></p>
         </div>
-        
+
         <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
-        
+
         <div class="share-container">
             <button class="share-btn" onclick="shareVibes()">SHARE YOUR VIBES 𝕏</button>
         </div>
     </div>
 
     <script>
+        // --- Setup ---
         const bgm = new Audio('helios-theme.mp3'); 
         bgm.loop = true;
         const bgmBtn = document.getElementById('bgm-toggle');
         const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
+        // MojoCounter URL with your unique ID
         const COUNTER_URL = "https://find-it.mojocounter.com/hits?id=helios-shrine-wei";
+        
         let raveInterval;
-        let milestonesReached = { 100: false, 500: false, 1000: false };
+        let milestonesReached = { 100: false, 500: false, 1000: false, 5000: false };
 
+        // --- Personal Score Initialization ---
         let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
         document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
+        // --- Loading Screen Fade ---
         window.addEventListener('load', () => {
             const loader = document.getElementById('loading-screen');
             setTimeout(() => {
@@ -63,34 +68,49 @@
             }, 1000);
         });
 
+        // --- Global Counter Fetch ---
         async function updateDisplay() {
             try {
-                const response = await fetch(COUNTER_URL);
+                // Fetch with a timestamp to prevent caching
+                const response = await fetch(`${COUNTER_URL}&t=${Date.now()}`);
                 const data = await response.json();
-                document.getElementById('count-number').innerText = data.value.toLocaleString();
-            } catch (e) { document.getElementById('count-number').innerText = "VIBIN'"; }
+                if (data.value !== undefined) {
+                    document.getElementById('count-number').innerText = data.value.toLocaleString();
+                }
+            } catch (e) { 
+                console.log("Global counter standby...");
+            }
         }
         updateDisplay();
 
+        // --- Main Button Logic ---
         async function playVoice() {
             const audio = new Audio('helios-voice.mp3');
             const img = document.getElementById('helios-img');
-            audio.play().catch(e => {});
             
+            audio.play().catch(e => console.log("Audio interaction required"));
+
+            // Animation Feedback
             img.classList.add('shake');
             document.body.classList.add('party-flash');
             spawnEmoji();
 
+            // Personal Counter Update
             personalClicks++;
             localStorage.setItem('helios_personal_clicks', personalClicks);
             document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
+            // Global Counter Increment
             try {
-                const response = await fetch(COUNTER_URL + "&increment=true");
+                const response = await fetch(`${COUNTER_URL}&increment=true&t=${Date.now()}`);
                 const data = await response.json();
-                document.getElementById('count-number').innerText = data.value.toLocaleString();
-                checkMilestones(data.value);
-            } catch (e) {}
+                if (data.value !== undefined) {
+                    document.getElementById('count-number').innerText = data.value.toLocaleString();
+                    checkMilestones(data.value);
+                }
+            } catch (e) {
+                console.log("Counter update skipped");
+            }
 
             setTimeout(() => {
                 img.classList.remove('shake');
@@ -98,6 +118,7 @@
             }, 100);
         }
 
+        // --- Milestone UI ---
         function showToast(message) {
             const toast = document.getElementById('notification-toast');
             toast.innerText = message;
@@ -107,14 +128,16 @@
 
         function checkMilestones(count) {
             Object.keys(milestonesReached).forEach(m => {
-                if (count >= m && !milestonesReached[m]) {
+                if (count >= parseInt(m) && !milestonesReached[m]) {
                     milestonesReached[m] = true;
                     showToast(`🔥 GLOBAL RAVE: ${m} VIBES! 🔥`);
+                    // Burst of emojis
                     for(let i=0; i<15; i++) setTimeout(spawnEmoji, i * 100);
                 }
             });
         }
 
+        // --- Music/Rave Toggle ---
         function toggleBGM() {
             if (bgm.paused) {
                 bgm.play().then(() => {
@@ -125,7 +148,7 @@
                         document.body.classList.add('party-flash');
                         setTimeout(() => document.body.classList.remove('party-flash'), 100);
                     }, 500);
-                });
+                }).catch(err => alert("Tap the 'WEIIIIII' button first to enable audio!"));
             } else {
                 bgm.pause();
                 bgmBtn.innerText = "🎵 MUSIC: OFF";
@@ -134,6 +157,7 @@
             }
         }
 
+        // --- Visual Effects ---
         function spawnEmoji() {
             const emoji = document.createElement('div');
             emoji.className = 'floating-item';
@@ -148,6 +172,7 @@
             const star = document.createElement('div');
             star.className = 'star';
             star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
             star.style.animationDelay = Math.random() * 10 + 's';
             if(starField) starField.appendChild(star);
         }
