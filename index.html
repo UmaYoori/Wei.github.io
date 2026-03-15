@@ -22,21 +22,24 @@
         </div>
 
         <div class="counter-box">
-            <p>GLOBAL VIBES:</p>
+            <p style="font-size: 0.8rem;">GLOBAL VIBES:</p>
             <span id="count-number" class="neon-text-small">0</span>
-            <p style="font-size: 0.7rem; color: #aaa;">YOURS: <span id="personal-count" style="color: #00ffff;">0</span></p>
+            <p style="font-size: 0.7rem; color: #aaa; margin-top: 5px;">
+                YOURS: <span id="personal-count" style="color: #00ffff;">0</span>
+                <button class="reset-btn" onclick="resetPersonal()">RESET</button>
+            </p>
         </div>
 
         <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
 
-        <button class="share-btn" style="background:transparent; border:none; color:#1DA1F2; font-size:0.8rem;" onclick="shareVibes()">SHARE 𝕏</button>
+        <button class="share-btn" style="background:transparent; border:none; color:#1DA1F2; font-size:0.8rem; cursor:pointer;" onclick="shareVibes()">SHARE 𝕏</button>
     </div>
 
     <script>
         const bgm = new Audio('helios-theme.mp3');
         bgm.loop = true;
         const emojis = ['✨', '🎵', '⭐', '🎧', '🔥'];
-        const COUNTER_URL = "https://find-it.mojocounter.com/hits?id=helios-shrine-wei";
+        const BASE_URL = "https://find-it.mojocounter.com/hits?id=helios-shrine-wei";
         let milestonesReached = { 100: false, 500: false, 1000: false };
 
         let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
@@ -44,9 +47,9 @@
 
         async function updateDisplay() {
             try {
-                const res = await fetch(`${COUNTER_URL}&t=${Date.now()}`);
+                const res = await fetch(`${BASE_URL}&t=${Date.now()}`);
                 const data = await res.json();
-                if(data.value) document.getElementById('count-number').innerText = data.value.toLocaleString();
+                if(data.value !== undefined) document.getElementById('count-number').innerText = data.value.toLocaleString();
             } catch (e) {}
         }
         updateDisplay();
@@ -63,16 +66,26 @@
             document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
             try {
-                const res = await fetch(`${COUNTER_URL}&increment=true&t=${Date.now()}`);
+                const res = await fetch(`${BASE_URL}&increment=true&t=${Date.now()}`);
                 const data = await res.json();
-                document.getElementById('count-number').innerText = data.value.toLocaleString();
-                checkMilestones(data.value);
+                if(data.value !== undefined) {
+                    document.getElementById('count-number').innerText = data.value.toLocaleString();
+                    checkMilestones(data.value);
+                }
             } catch (e) {}
             setTimeout(() => { img.classList.remove('shake'); document.body.classList.remove('party-flash'); }, 100);
         }
 
+        function resetPersonal() {
+            if(confirm("Reset your personal vibe count?")) {
+                personalClicks = 0;
+                localStorage.setItem('helios_personal_clicks', 0);
+                document.getElementById('personal-count').innerText = "0";
+            }
+        }
+
         function checkMilestones(count) {
-            Object.keys(milestonesReached).forEach(m => {
+            [100, 500, 1000].forEach(m => {
                 if (count >= m && !milestonesReached[m]) {
                     milestonesReached[m] = true;
                     const toast = document.getElementById('notification-toast');
@@ -85,7 +98,7 @@
 
         function toggleBGM() {
             if (bgm.paused) {
-                bgm.play();
+                bgm.play().catch(() => alert("Click WEIIIIII first!"));
                 document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: ON";
             } else {
                 bgm.pause();
@@ -97,7 +110,7 @@
             const e = document.createElement('div');
             e.className = 'floating-item';
             e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            e.style.left = Math.random() * 100 + "vw";
+            e.style.left = Math.random() * 90 + "vw";
             document.body.appendChild(e);
             setTimeout(() => e.remove(), 4000);
         }
@@ -113,7 +126,7 @@
         }
 
         function shareVibes() {
-            window.open(`https://twitter.com/intent/tweet?text=I contributed ${personalClicks} vibes!&url=${window.location.href}`);
+            window.open(`https://twitter.com/intent/tweet?text=I contributed ${personalClicks} vibes to the Daitaku Helios Shrine! 🌟&url=${window.location.href}`);
         }
     </script>
 </body>
