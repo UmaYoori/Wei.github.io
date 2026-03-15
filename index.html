@@ -3,183 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>DAITAKU HELIOS SHRINE</title>
+    <title>HELIOS SHRINE</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="notification-toast">🌟 MILESTONE REACHED! 🌟</div>
-
-    <div id="loading-screen">
-        <div class="loader-content">
-            <h2 class="neon-text-small">LOADING VIBES...</h2>
-            <div class="progress-bar-container"><div id="progress-bar"></div></div>
-        </div>
-    </div>
-
+    <div id="notification-toast">🌟 MILESTONE! 🌟</div>
     <div id="star-field"></div>
 
-    <div class="music-controls">
-        <button id="bgm-toggle" onclick="toggleBGM()">🎵 MUSIC: OFF</button>
-    </div>
-
     <div class="shrine-container">
+        <div class="music-controls">
+            <button id="bgm-toggle" onclick="toggleBGM()">🎵 MUSIC: OFF</button>
+        </div>
+
         <h1 class="neon-text">☆ DAITAKU HELIOS ☆</h1>
+
         <div class="char-box">
             <img src="Daitaku_Helios_Chibi1-2.webp" alt="Helios" id="helios-img" class="floating">
         </div>
 
         <div class="counter-box">
             <p>GLOBAL VIBES:</p>
-            <span id="count-number" class="neon-text-small">VIBIN'</span>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #aaa;">YOUR CONTRIBUTION: <span id="personal-count" style="color: #00ffff;">0</span></p>
+            <span id="count-number" class="neon-text-small">0</span>
+            <p style="font-size: 0.7rem; color: #aaa;">YOURS: <span id="personal-count" style="color: #00ffff;">0</span></p>
         </div>
 
         <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
 
-        <div class="share-container">
-            <button class="share-btn" onclick="shareVibes()">SHARE YOUR VIBES 𝕏</button>
-        </div>
+        <button class="share-btn" style="background:transparent; border:none; color:#1DA1F2; font-size:0.8rem;" onclick="shareVibes()">SHARE 𝕏</button>
     </div>
 
     <script>
-        // --- Setup ---
-        const bgm = new Audio('helios-theme.mp3'); 
+        const bgm = new Audio('helios-theme.mp3');
         bgm.loop = true;
-        const bgmBtn = document.getElementById('bgm-toggle');
-        const emojis = ['✨', '🎵', '⭐', '🎧', '🔥', '💃'];
-        // MojoCounter URL with your unique ID
+        const emojis = ['✨', '🎵', '⭐', '🎧', '🔥'];
         const COUNTER_URL = "https://find-it.mojocounter.com/hits?id=helios-shrine-wei";
-        
-        let raveInterval;
-        let milestonesReached = { 100: false, 500: false, 1000: false, 5000: false };
+        let milestonesReached = { 100: false, 500: false, 1000: false };
 
-        // --- Personal Score Initialization ---
         let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
         document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
-        // --- Loading Screen Fade ---
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loading-screen');
-            setTimeout(() => {
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.display = 'none'; }, 500);
-                }
-            }, 1000);
-        });
-
-        // --- Global Counter Fetch ---
         async function updateDisplay() {
             try {
-                // Fetch with a timestamp to prevent caching
-                const response = await fetch(`${COUNTER_URL}&t=${Date.now()}`);
-                const data = await response.json();
-                if (data.value !== undefined) {
-                    document.getElementById('count-number').innerText = data.value.toLocaleString();
-                }
-            } catch (e) { 
-                console.log("Global counter standby...");
-            }
+                const res = await fetch(`${COUNTER_URL}&t=${Date.now()}`);
+                const data = await res.json();
+                if(data.value) document.getElementById('count-number').innerText = data.value.toLocaleString();
+            } catch (e) {}
         }
         updateDisplay();
 
-        // --- Main Button Logic ---
         async function playVoice() {
-            const audio = new Audio('helios-voice.mp3');
+            new Audio('helios-voice.mp3').play().catch(()=>{});
             const img = document.getElementById('helios-img');
-            
-            audio.play().catch(e => console.log("Audio interaction required"));
-
-            // Animation Feedback
             img.classList.add('shake');
             document.body.classList.add('party-flash');
             spawnEmoji();
 
-            // Personal Counter Update
             personalClicks++;
             localStorage.setItem('helios_personal_clicks', personalClicks);
             document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
-            // Global Counter Increment
             try {
-                const response = await fetch(`${COUNTER_URL}&increment=true&t=${Date.now()}`);
-                const data = await response.json();
-                if (data.value !== undefined) {
-                    document.getElementById('count-number').innerText = data.value.toLocaleString();
-                    checkMilestones(data.value);
-                }
-            } catch (e) {
-                console.log("Counter update skipped");
-            }
-
-            setTimeout(() => {
-                img.classList.remove('shake');
-                document.body.classList.remove('party-flash');
-            }, 100);
-        }
-
-        // --- Milestone UI ---
-        function showToast(message) {
-            const toast = document.getElementById('notification-toast');
-            toast.innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+                const res = await fetch(`${COUNTER_URL}&increment=true&t=${Date.now()}`);
+                const data = await res.json();
+                document.getElementById('count-number').innerText = data.value.toLocaleString();
+                checkMilestones(data.value);
+            } catch (e) {}
+            setTimeout(() => { img.classList.remove('shake'); document.body.classList.remove('party-flash'); }, 100);
         }
 
         function checkMilestones(count) {
             Object.keys(milestonesReached).forEach(m => {
-                if (count >= parseInt(m) && !milestonesReached[m]) {
+                if (count >= m && !milestonesReached[m]) {
                     milestonesReached[m] = true;
-                    showToast(`🔥 GLOBAL RAVE: ${m} VIBES! 🔥`);
-                    // Burst of emojis
-                    for(let i=0; i<15; i++) setTimeout(spawnEmoji, i * 100);
+                    const toast = document.getElementById('notification-toast');
+                    toast.innerText = `🔥 GLOBAL RAVE: ${m}! 🔥`;
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
                 }
             });
         }
 
-        // --- Music/Rave Toggle ---
         function toggleBGM() {
             if (bgm.paused) {
-                bgm.play().then(() => {
-                    bgm.volume = 0.3;
-                    bgmBtn.innerText = "🎵 MUSIC: ON";
-                    bgmBtn.classList.add('playing');
-                    raveInterval = setInterval(() => {
-                        document.body.classList.add('party-flash');
-                        setTimeout(() => document.body.classList.remove('party-flash'), 100);
-                    }, 500);
-                }).catch(err => alert("Tap the 'WEIIIIII' button first to enable audio!"));
+                bgm.play();
+                document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: ON";
             } else {
                 bgm.pause();
-                bgmBtn.innerText = "🎵 MUSIC: OFF";
-                bgmBtn.classList.remove('playing');
-                clearInterval(raveInterval);
+                document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: OFF";
             }
         }
 
-        // --- Visual Effects ---
         function spawnEmoji() {
-            const emoji = document.createElement('div');
-            emoji.className = 'floating-item';
-            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            emoji.style.left = Math.random() * 100 + "vw";
-            document.body.appendChild(emoji);
-            setTimeout(() => emoji.remove(), 5000);
+            const e = document.createElement('div');
+            e.className = 'floating-item';
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + "vw";
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 4000);
         }
 
         const starField = document.getElementById('star-field');
-        for (let i = 0; i < 50; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDelay = Math.random() * 10 + 's';
-            if(starField) starField.appendChild(star);
+        for (let i = 0; i < 40; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = `${Math.random() * 8 + 4}s, 3s`;
+            s.style.animationDelay = Math.random() * -10 + 's';
+            starField.appendChild(s);
         }
 
         function shareVibes() {
-            const tweetText = `I've contributed ${personalClicks} vibes to the Daitaku Helios Shrine! 🌟`;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+            window.open(`https://twitter.com/intent/tweet?text=I contributed ${personalClicks} vibes!&url=${window.location.href}`);
         }
     </script>
 </body>
