@@ -36,103 +36,94 @@
     </div>
 
     <script>
-        const bgm = new Audio('helios-theme.mp3');
-        bgm.loop = true;
-        const emojis = ['✨', '🎵', '⭐', '🎧', '🔥'];
-        const BASE_URL = "https://find-it.mojocounter.com/hits?id=helios-shrine-wei";
-        let milestonesReached = { 100: false, 500: false, 1000: false };
+    const bgm = new Audio('helios-theme.mp3');
+    bgm.loop = true;
+    const emojis = ['✨', '🎵', '⭐', '🎧', '🔥'];
+    let milestonesReached = { 100: false, 500: false, 1000: false };
 
-        let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
+    let personalClicks = parseInt(localStorage.getItem('helios_personal_clicks')) || 0;
+    document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
+
+    function playVoice() {
+        new Audio('helios-voice.mp3').play().catch(()=>{});
+        const img = document.getElementById('helios-img');
+        img.classList.add('shake');
+        document.body.classList.add('party-flash');
+        spawnEmoji();
+
+        personalClicks++;
+        localStorage.setItem('helios_personal_clicks', personalClicks);
         document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
+        checkMilestones(personalClicks);
 
-        async function updateDisplay() {
-            try {
-                const res = await fetch(`${BASE_URL}&t=${Date.now()}`);
-                const data = await res.json();
-                if(data.value !== undefined) {
-                    document.getElementById('count-number').innerText = data.value.toLocaleString();
-                    checkMilestones(data.value);
-                }
-            } catch (e) {}
+        setTimeout(() => { 
+            img.classList.remove('shake'); 
+            document.body.classList.remove('party-flash'); 
+        }, 100);
+    }
+
+    // --- TURBO STAR TOGGLE ---
+    function toggleBGM() {
+        const root = document.documentElement;
+        if (bgm.paused) {
+            bgm.play().catch(() => alert("Click WEIIIIII first!"));
+            document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: ON";
+            // Speed up the stars!
+            root.style.setProperty('--star-speed', '1.5s');
+        } else {
+            bgm.pause();
+            document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: OFF";
+            // Slow them back down
+            root.style.setProperty('--star-speed', '8s');
         }
-        updateDisplay();
+    }
 
-        function playVoice() {
-            new Audio('helios-voice.mp3').play().catch(()=>{});
-            const img = document.getElementById('helios-img');
-            img.classList.add('shake');
-            document.body.classList.add('party-flash');
-            spawnEmoji();
-
-            personalClicks++;
-            localStorage.setItem('helios_personal_clicks', personalClicks);
-            document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
-
-            // The "Image Ping" Trick: Bypasses CORS and security blocks
-            const ping = new Image();
-            ping.src = `${BASE_URL}&increment=true&t=${Date.now()}`;
-            
-            // Refresh number after a tiny delay
-            setTimeout(updateDisplay, 800);
-            
-            setTimeout(() => { 
-                img.classList.remove('shake'); 
-                document.body.classList.remove('party-flash'); 
-            }, 100);
+    function resetPersonal() {
+        if(confirm("Reset your vibes to zero?")) {
+            personalClicks = 0;
+            localStorage.setItem('helios_personal_clicks', 0);
+            document.getElementById('personal-count').innerText = "0";
+            milestonesReached = { 100: false, 500: false, 1000: false };
         }
+    }
 
-        function resetPersonal() {
-            if(confirm("Reset your personal vibe count?")) {
-                personalClicks = 0;
-                localStorage.setItem('helios_personal_clicks', 0);
-                document.getElementById('personal-count').innerText = "0";
+    function checkMilestones(count) {
+        [100, 500, 1000].forEach(m => {
+            if (count >= m && !milestonesReached[m]) {
+                milestonesReached[m] = true;
+                const toast = document.getElementById('notification-toast');
+                toast.innerText = `🔥 MILESTONE: ${m} VIBES! 🔥`;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+                for(let i=0; i<10; i++) setTimeout(spawnEmoji, i * 100);
             }
-        }
+        });
+    }
 
-        function checkMilestones(count) {
-            [100, 500, 1000].forEach(m => {
-                if (count >= m && !milestonesReached[m]) {
-                    milestonesReached[m] = true;
-                    const toast = document.getElementById('notification-toast');
-                    toast.innerText = `🔥 GLOBAL RAVE: ${m}! 🔥`;
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 3000);
-                }
-            });
-        }
+    function spawnEmoji() {
+        const e = document.createElement('div');
+        e.className = 'floating-item';
+        e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        e.style.left = Math.random() * 90 + "vw";
+        document.body.appendChild(e);
+        setTimeout(() => e.remove(), 4000);
+    }
 
-        function toggleBGM() {
-            if (bgm.paused) {
-                bgm.play().catch(() => alert("Click WEIIIIII first!"));
-                document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: ON";
-            } else {
-                bgm.pause();
-                document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: OFF";
-            }
-        }
+    const starField = document.getElementById('star-field');
+    for (let i = 0; i < 40; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random() * 100 + 'vw';
+        // Random offset so they don't all fall in a straight line at once
+        s.style.animationDelay = Math.random() * -10 + 's';
+        starField.appendChild(s);
+    }
 
-        function spawnEmoji() {
-            const e = document.createElement('div');
-            e.className = 'floating-item';
-            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            e.style.left = Math.random() * 90 + "vw";
-            document.body.appendChild(e);
-            setTimeout(() => e.remove(), 4000);
-        }
+    function shareVibes() {
+        const text = `I have offered ${personalClicks} vibes at the Daitaku Helios Shrine! 🌟`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`);
+    }
+</script>
 
-        const starField = document.getElementById('star-field');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.animationDuration = `${Math.random() * 8 + 4}s, 3s`;
-            s.style.animationDelay = Math.random() * -10 + 's';
-            starField.appendChild(s);
-        }
-
-        function shareVibes() {
-            window.open(`https://twitter.com/intent/tweet?text=I contributed ${personalClicks} vibes to the Daitaku Helios Shrine! 🌟&url=${window.location.href}`);
-        }
-    </script>
 </body>
 </html>
