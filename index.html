@@ -57,8 +57,9 @@
     </div>
 
     <script>
-        // --- Audio Setup ---
-        const bgm = new Audio('https://umayoori.github.io/Wei.github.io/'); 
+        // --- FIXED AUDIO SETUP ---
+        // Pointing directly to the file name in your repo
+        const bgm = new Audio('helios-theme.mp3'); 
         bgm.loop = true;
         bgm.preload = 'auto';
 
@@ -98,16 +99,13 @@
             const audio = new Audio('helios-voice.mp3');
             const img = document.getElementById('helios-img');
             
-            // Play voice and unlock BGM engine
             audio.play().catch(e => console.log("Audio blocked"));
             if (bgm.paused) { bgm.load(); } 
 
-            // Visual Hype
             img.classList.add('shake');
             document.body.classList.add('party-flash');
             spawnEmoji(); spawnEmoji();
 
-            // Hit Counter
             try {
                 const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`);
                 const data = await response.json();
@@ -120,7 +118,7 @@
             }, 100);
         }
 
-        // --- Music & Rave Logic ---
+        // --- Music Logic ---
         function toggleBGM() {
             if (bgm.paused) {
                 bgm.play().then(() => {
@@ -134,7 +132,8 @@
                         setTimeout(() => document.body.classList.remove('party-flash'), 100);
                     }, 500);
                 }).catch(err => {
-                    alert("Rave Error: Tap 'WEIIIIII' first to wake up the browser, then try again!");
+                    console.error(err);
+                    alert("Rave Error: Make sure 'helios-theme.mp3' is uploaded to your GitHub main folder!");
                 });
             } else {
                 bgm.pause();
@@ -145,7 +144,7 @@
             }
         }
 
-        // --- Background Stars & Emoji Rain ---
+        // --- Visual Effects ---
         function spawnEmoji() {
             const emoji = document.createElement('div');
             emoji.className = 'floating-item';
@@ -166,7 +165,6 @@
             if(starField) starField.appendChild(star);
         }
 
-        // --- UI Modals & Sharing ---
         function openModal() { document.getElementById("helios-modal").style.display = "block"; }
         function closeModal() { document.getElementById("helios-modal").style.display = "none"; }
         
