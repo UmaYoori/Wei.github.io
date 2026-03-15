@@ -25,10 +25,8 @@ html, body {
 
 #star-field {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     z-index: -1;
     pointer-events: none;
 }
@@ -37,8 +35,7 @@ html, body {
     position: absolute;
     background: white;
     border-radius: 50%;
-    width: 2px;
-    height: 2px;
+    width: 2px; height: 2px;
     opacity: 0.5;
     animation: fall linear infinite, twinkle 3s infinite;
 }
@@ -53,10 +50,7 @@ html, body {
     50% { opacity: 1; }
 }
 
-.party-flash {
-    animation: flash 0.1s infinite;
-}
-
+.party-flash { animation: flash 0.1s infinite; }
 @keyframes flash {
     0%, 100% { background-color: #0a0a0a; }
     50% { background-color: #220022; }
