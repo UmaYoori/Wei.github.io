@@ -22,12 +22,10 @@
         </div>
 
         <div class="counter-box">
-            <p style="font-size: 0.8rem;">GLOBAL VIBES:</p>
-            <span id="count-number" class="neon-text-small">0</span>
-            <p style="font-size: 0.7rem; color: #aaa; margin-top: 5px;">
-                YOURS: <span id="personal-count" style="color: #00ffff;">0</span>
-                <button class="reset-btn" onclick="resetPersonal()">RESET</button>
-            </p>
+            <p style="font-size: 0.9rem; margin-bottom: 5px;">YOUR TOTAL VIBES:</p>
+            <span id="personal-count" class="neon-text-small">0</span>
+            <br>
+            <button class="reset-btn" onclick="resetPersonal()">RESET COUNTER</button>
         </div>
 
         <button class="vibe-button" onclick="playVoice()">WEIIIIII!!</button>
@@ -62,19 +60,16 @@
         }, 100);
     }
 
-    // --- TURBO STAR TOGGLE ---
     function toggleBGM() {
         const root = document.documentElement;
         if (bgm.paused) {
             bgm.play().catch(() => alert("Click WEIIIIII first!"));
             document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: ON";
-            // Speed up the stars!
-            root.style.setProperty('--star-speed', '1.5s');
+            root.style.setProperty('--star-speed', '1.5s'); // RAVE SPEED
         } else {
             bgm.pause();
             document.getElementById('bgm-toggle').innerText = "🎵 MUSIC: OFF";
-            // Slow them back down
-            root.style.setProperty('--star-speed', '8s');
+            root.style.setProperty('--star-speed', '8s'); // CHILL SPEED
         }
     }
 
@@ -114,7 +109,6 @@
         const s = document.createElement('div');
         s.className = 'star';
         s.style.left = Math.random() * 100 + 'vw';
-        // Random offset so they don't all fall in a straight line at once
         s.style.animationDelay = Math.random() * -10 + 's';
         starField.appendChild(s);
     }
@@ -124,6 +118,5 @@
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`);
     }
 </script>
-
 </body>
 </html>
