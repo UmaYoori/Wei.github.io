@@ -1,98 +1,225 @@
-body {
-    background-color: #000;
-    background-image: radial-gradient(circle, #1a1a1a 0%, #000 100%);
-    color: white;
-    font-family: 'Arial Black', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-    text-align: center;
+/* --- Global Styles --- */
+:root {
+    --neon-pink: #ff00ff;
+    --neon-blue: #00ffff;
+    --speed: 10s;
 }
 
-/* Loading Screen Styles */
-#loading-screen {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #0a0a0a;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* --- Milestone Toast Notification --- */
+#notification-toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 0, 255, 0.9);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 0 20px var(--neon-pink);
+    z-index: 9999;
+    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #fff;
+    text-align: center;
+    min-width: 250px;
+    text-transform: uppercase;
+}
+
+#notification-toast.show {
+    bottom: 30px;
+}
+
+/* --- Background Effects --- */
+#star-field {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    opacity: 0.5;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* --- Party Flash Effect --- */
+.party-flash {
+    animation: flash 0.1s infinite;
+}
+
+@keyframes flash {
+    0% { background-color: #0a0a0a; }
+    50% { background-color: #220022; }
+    100% { background-color: #0a0a0a; }
+}
+
+/* --- Container & UI --- */
+.shrine-container {
+    text-align: center;
+    padding: 20px;
+    z-index: 10;
+}
+
+.neon-text {
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+    margin-bottom: 20px;
+}
+
+.neon-text-small {
+    font-size: 2rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.char-box img {
+    width: 250px;
+    filter: drop-shadow(0 0 15px var(--neon-pink));
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.shake {
+    animation: shake 0.1s infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-1px, -2px) rotate(-1deg); }
+    50% { transform: translate(-3px, 0px) rotate(1deg); }
+    75% { transform: translate(3px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -1px) rotate(-1deg); }
+}
+
+/* --- Buttons --- */
+.vibe-button {
+    background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--neon-pink);
+    margin-top: 20px;
+    transition: transform 0.1s;
+}
+
+.vibe-button:active {
+    transform: scale(0.9);
+}
+
+.music-controls button {
+    background: #222;
+    color: #fff;
+    border: 1px solid var(--neon-blue);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.music-controls button.playing {
+    background: var(--neon-blue);
+    color: #000;
+}
+
+/* --- Floating Items (Emojis) --- */
+.floating-item {
+    position: fixed;
+    bottom: -50px;
+    font-size: 2rem;
+    animation: moveUp 5s linear forwards;
+    z-index: 5;
+}
+
+@keyframes moveUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* --- Counter Box --- */
+.counter-box {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Share Button --- */
+.share-btn {
+    background: transparent;
+    color: #1DA1F2;
+    border: 1px solid #1DA1F2;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+/* --- Loading Screen --- */
+#loading-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
     background: #000;
-    z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.5s ease-out;
+    z-index: 10000;
+    transition: opacity 0.5s;
 }
 
 .progress-bar-container {
     width: 200px;
-    height: 10px;
+    height: 4px;
     background: #333;
-    border-radius: 5px;
-    margin-top: 20px;
-    overflow: hidden;
+    margin-top: 10px;
 }
 
 #progress-bar {
     width: 0%;
     height: 100%;
-    background: #ff00de;
-    box-shadow: 0 0 10px #ff00de;
-    transition: width 0.3s;
+    background: var(--neon-blue);
+    transition: width 0.5s;
 }
-
-/* Character & Animations */
-.neon-text { animation: rainbow-glow 3s infinite linear; font-size: 3rem; }
-.neon-text-small { font-size: 2rem; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
-
-@keyframes rainbow-glow {
-    0% { color: #ff00de; text-shadow: 0 0 20px #ff00de; }
-    33% { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
-    66% { color: #ffff00; text-shadow: 0 0 20px #ffff00; }
-    100% { color: #ff00de; text-shadow: 0 0 20px #ff00de; }
-}
-
-.char-box img { width: 300px; filter: drop-shadow(0 0 15px #00f2ff); }
-.floating { animation: bounce 2s infinite ease-in-out; }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-.shake { animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both; }
-@keyframes shake {
-    10%, 90% { transform: translate3d(-1px, 0, 0) scale(1.1); }
-    20%, 80% { transform: translate3d(2px, 0, 0) scale(1.1); }
-    40%, 60% { transform: translate3d(4px, 0, 0) scale(1.1); }
-}
-
-/* Button & UI */
-.vibe-button {
-    background: #ff00de; border: none; padding: 15px 30px; color: white;
-    font-weight: bold; cursor: pointer; border-radius: 50px; box-shadow: 0 0 15px #ff00de;
-}
-
-.music-controls { position: absolute; top: 20px; right: 20px; z-index: 10; }
-#bgm-toggle {
-    background: transparent; border: 2px solid #00f2ff; color: #00f2ff;
-    padding: 10px 15px; cursor: pointer; border-radius: 5px;
-}
-#bgm-toggle.playing { background: #00f2ff; color: #000; box-shadow: 0 0 20px #00f2ff; }
-
-/* Stars & Particles */
-#star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: black; }
-.star { position: absolute; background: white; border-radius: 50%; animation: moveStar var(--speed, 10s) linear infinite; }
-@keyframes moveStar { from { transform: translateY(-10vh); } to { transform: translateY(110vh); } }
-
-.floating-item { position: fixed; z-index: -1; animation: floatUp 5s linear forwards; }
-@keyframes floatUp { 0% { transform: translateY(110vh); } 100% { transform: translateY(-20vh); } }
-
-/* Flash & Modal */
-.party-flash { animation: flash-anim 0.1s; }
-@keyframes flash-anim { 0% { background-color: #ff00de; } 100% { background-color: transparent; } }
-
-.modal { display: none; position: fixed; z-index: 100; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-.modal-content { background: #1a1a1a; margin: 15% auto; padding: 20px; border: 2px solid #ff00de; border-radius: 15px; width: 80%; max-width: 400px; color: white; }
-.share-btn { background: #000; color: white; border: 1px solid #555; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 15px; }
-#info-btn { position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: #00f2ff; border: none; cursor: pointer; z-index: 10; font-weight: bold; }
-
