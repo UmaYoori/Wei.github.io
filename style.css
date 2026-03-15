@@ -1,8 +1,6 @@
-/* --- Global Styles --- */
 :root {
     --neon-pink: #ff00ff;
     --neon-blue: #00ffff;
-    --speed: 10s;
 }
 
 * {
@@ -12,50 +10,28 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
     background-color: #0a0a0a;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;
+    font-family: sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
 }
 
-/* --- Milestone Toast Notification --- */
-#notification-toast {
-    position: fixed;
-    bottom: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 0, 255, 0.9);
-    color: white;
-    padding: 15px 30px;
-    border-radius: 50px;
-    font-weight: bold;
-    box-shadow: 0 0 20px var(--neon-pink);
-    z-index: 9999;
-    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 2px solid #fff;
-    text-align: center;
-    min-width: 250px;
-    text-transform: uppercase;
-}
-
-#notification-toast.show {
-    bottom: 30px;
-}
-
-/* --- Background Effects --- */
 #star-field {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
+    pointer-events: none;
 }
 
 .star {
@@ -65,7 +41,12 @@ body {
     width: 2px;
     height: 2px;
     opacity: 0.5;
-    animation: twinkle 3s infinite;
+    animation: fall linear infinite, twinkle 3s infinite;
+}
+
+@keyframes fall {
+    from { transform: translateY(-10vh); }
+    to { transform: translateY(110vh); }
 }
 
 @keyframes twinkle {
@@ -73,157 +54,100 @@ body {
     50% { opacity: 1; }
 }
 
-/* --- Party Flash Effect --- */
 .party-flash {
     animation: flash 0.1s infinite;
 }
 
 @keyframes flash {
-    0% { background-color: #0a0a0a; }
+    0%, 100% { background-color: #0a0a0a; }
     50% { background-color: #220022; }
-    100% { background-color: #0a0a0a; }
 }
 
-/* --- Container & UI --- */
 .shrine-container {
-    text-align: center;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 90%;
+    width: 100%;
+    padding: 10px;
     z-index: 10;
 }
 
 .neon-text {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     color: #fff;
     text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
-    margin-bottom: 20px;
+}
+
+.char-box img {
+    max-height: 40vh;
+    width: auto;
+    filter: drop-shadow(0 0 15px var(--neon-pink));
+}
+
+.floating { animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+.shake { animation: shake 0.1s infinite; }
+@keyframes shake {
+    0% { transform: translate(1px, 1px); }
+    50% { transform: translate(-2px, -1px); }
+    100% { transform: translate(1px, 1px); }
+}
+
+.counter-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 15px;
+    width: 90%;
+    text-align: center;
 }
 
 .neon-text-small {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: var(--neon-blue);
     text-shadow: 0 0 10px var(--neon-blue);
 }
 
-.char-box img {
-    width: 250px;
-    filter: drop-shadow(0 0 15px var(--neon-pink));
-}
-
-.floating {
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-.shake {
-    animation: shake 0.1s infinite;
-}
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    25% { transform: translate(-1px, -2px) rotate(-1deg); }
-    50% { transform: translate(-3px, 0px) rotate(1deg); }
-    75% { transform: translate(3px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -1px) rotate(-1deg); }
-}
-
-/* --- Buttons --- */
 .vibe-button {
     background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
     border: none;
-    padding: 20px 40px;
-    font-size: 1.5rem;
+    padding: 15px 50px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: white;
     border-radius: 50px;
-    cursor: pointer;
     box-shadow: 0 0 20px var(--neon-pink);
-    margin-top: 20px;
-    transition: transform 0.1s;
-}
-
-.vibe-button:active {
-    transform: scale(0.9);
 }
 
 .music-controls button {
     background: #222;
     color: #fff;
     border: 1px solid var(--neon-blue);
-    padding: 8px 15px;
+    padding: 5px 15px;
     border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
 }
 
-.music-controls button.playing {
-    background: var(--neon-blue);
-    color: #000;
-}
-
-/* --- Floating Items (Emojis) --- */
 .floating-item {
     position: fixed;
     bottom: -50px;
     font-size: 2rem;
-    animation: moveUp 5s linear forwards;
-    z-index: 5;
+    animation: moveUp 4s linear forwards;
 }
 
-@keyframes moveUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-110vh); opacity: 0; }
-}
+@keyframes moveUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-110vh); opacity: 0; } }
 
-/* --- Counter Box --- */
-.counter-box {
-    margin: 20px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* --- Share Button --- */
-.share-btn {
-    background: transparent;
-    color: #1DA1F2;
-    border: 1px solid #1DA1F2;
+#notification-toast {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--neon-pink);
     padding: 10px 20px;
     border-radius: 20px;
-    margin-top: 20px;
-    cursor: pointer;
+    transition: top 0.5s;
+    z-index: 100;
 }
 
-/* --- Loading Screen --- */
-#loading-screen {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    transition: opacity 0.5s;
-}
-
-.progress-bar-container {
-    width: 200px;
-    height: 4px;
-    background: #333;
-    margin-top: 10px;
-}
-
-#progress-bar {
-    width: 0%;
-    height: 100%;
-    background: var(--neon-blue);
-    transition: width 0.5s;
-}
-.share-btn:hover {
-    background: #1DA1F2;
-    color: white;
-}
+#notification-toast.show { top: 20px; }
