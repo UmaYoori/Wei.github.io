@@ -49,12 +49,15 @@
             try {
                 const res = await fetch(`${BASE_URL}&t=${Date.now()}`);
                 const data = await res.json();
-                if(data.value !== undefined) document.getElementById('count-number').innerText = data.value.toLocaleString();
+                if(data.value !== undefined) {
+                    document.getElementById('count-number').innerText = data.value.toLocaleString();
+                    checkMilestones(data.value);
+                }
             } catch (e) {}
         }
         updateDisplay();
 
-        async function playVoice() {
+        function playVoice() {
             new Audio('helios-voice.mp3').play().catch(()=>{});
             const img = document.getElementById('helios-img');
             img.classList.add('shake');
@@ -65,15 +68,17 @@
             localStorage.setItem('helios_personal_clicks', personalClicks);
             document.getElementById('personal-count').innerText = personalClicks.toLocaleString();
 
-            try {
-                const res = await fetch(`${BASE_URL}&increment=true&t=${Date.now()}`);
-                const data = await res.json();
-                if(data.value !== undefined) {
-                    document.getElementById('count-number').innerText = data.value.toLocaleString();
-                    checkMilestones(data.value);
-                }
-            } catch (e) {}
-            setTimeout(() => { img.classList.remove('shake'); document.body.classList.remove('party-flash'); }, 100);
+            // The "Image Ping" Trick: Bypasses CORS and security blocks
+            const ping = new Image();
+            ping.src = `${BASE_URL}&increment=true&t=${Date.now()}`;
+            
+            // Refresh number after a tiny delay
+            setTimeout(updateDisplay, 800);
+            
+            setTimeout(() => { 
+                img.classList.remove('shake'); 
+                document.body.classList.remove('party-flash'); 
+            }, 100);
         }
 
         function resetPersonal() {
